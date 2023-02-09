@@ -1,82 +1,97 @@
-//-------------------
-// GLOBAL constants
-//-------------------
-const canvas_width = 175;
-const canvas_height = 175;
-const canvas_stroke_style = "#64ffda";
-const canvas_line_join = "round";
-const canvas_line_width = 10;
-const canvas_background_color = "#0a192f";
-const canvas_id = "canvas";
+const canvasWidth = 175;
+const canvasHeight = 175;
+const canvasStrokeStyle = "#64ffda";
+const canvasLineJoin = "round";
+const canvasLineWidth = 10;
+const canvasBackgroundColor = "#0a192f";
+const canvasId = "canvas";
 
-//---------------
-// Create canvas
-//---------------
-const canvas_box = document.getElementById('canvas_box');
-const canvas = createCanvas();
-canvas_box.appendChild(canvas);
-
-const ctx = canvas.getContext("2d");
-
-//-------------------
-// Global variables
-//-------------------
 let clickX = [];
 let clickY = [];
 let clickD = [];
 let drawing = false;
 
-//---------------------
-// MOUSE DOWN function
-//---------------------
-canvas.addEventListener("mousedown", handleMouseDown);
+const canvasBox = document.getElementById("canvas_box");
+const canvas = document.createElement("canvas");
+canvas.width = canvasWidth;
+canvas.height = canvasHeight;
+canvas.id = canvasId;
+canvas.style.backgroundColor = canvasBackgroundColor;
+canvasBox.appendChild(canvas);
+const ctx = canvas.getContext("2d");
 
-//-----------------------
-// TOUCH START function
-//-----------------------
-canvas.addEventListener("touchstart", handleTouchStart);
+canvas.addEventListener("mousedown", (event) => {
+  const rect = canvas.getBoundingClientRect();
+  const mouseX = event.clientX - rect.left;
+  const mouseY = event.clientY - rect.top;
+  drawing = true;
+  addUserGesture(mouseX, mouseY);
+  drawOnCanvas();
+});
 
-//---------------------
-// MOUSE MOVE function
-//---------------------
-canvas.addEventListener("mousemove", handleMouseMove);
+canvas.addEventListener("touchstart", (event) => {
+  if (event.target !== canvas) {
+    return;
+  }
+  event.preventDefault();
 
-//---------------------
-// TOUCH MOVE function
-//---------------------
-canvas.addEventListener("touchmove", handleTouchMove);
+  const rect = canvas.getBoundingClientRect();
+  const touch = event.touches[0];
 
-//-------------------
-// MOUSE UP function
-//-------------------
-canvas.addEventListener("mouseup", handleMouseUp);
+  const mouseX = touch.clientX - rect.left;
+  const mouseY = touch.clientY - rect.top;
 
-//---------------------
-// TOUCH END function
-//---------------------
-canvas.addEventListener("touchend", handleTouchEnd);
+  drawing = true;
+  addUserGesture(mouseX, mouseY);
+  drawOnCanvas();
+});
 
-//----------------------
-// MOUSE LEAVE function
-//----------------------
-canvas.addEventListener("mouseleave", handleMouseLeave);
+canvas.addEventListener("mousemove", (event) => {
+  if (!drawing) {
+    return;
+  }
 
-//-----------------------
-// TOUCH LEAVE function
-//-----------------------
-canvas.addEventListener("touchleave", handleTouchLeave);
+  const rect = canvas.getBoundingClientRect();
+  const mouseX = event.clientX - rect.left;
+  const mouseY = event.clientY - rect.top;
 
-//--------------------
-// ADD CLICK function
-//--------------------
-function addUserGesture(coords) {
-  clickX.push(coords.x);
-  clickY.push(coords.y);
-  clickD.push(coords.dragging);
-}
+  addUserGesture(mouseX, mouseY, true);
+  drawOnCanvas();
+});
 
-//-------------------
-// RE DRAW function
-//-------------------
-function drawOnCanvas() {
-	ctx.clearRect
+canvas.addEventListener("touchmove", (event) => {
+  if (event.target !== canvas) {
+    return;
+  }
+  event.preventDefault();
+  if (!drawing) {
+    return;
+  }
+
+  const rect = canvas.getBoundingClientRect();
+  const touch = event.touches[0];
+
+  const mouseX = touch.clientX - rect.left;
+  const mouseY = touch.clientY - rect.top;
+
+  addUserGesture(mouseX, mouseY, true);
+  drawOnCanvas();
+});
+
+canvas.addEventListener("mouseup", () => {
+  drawing = false;
+});
+
+canvas.addEventListener("touchend", (event) => {
+  if (event.target !== canvas) {
+    return;
+  }
+  event.preventDefault();
+  drawing = false;
+});
+
+canvas.addEventListener("mouseleave", () => {
+  drawing = false;
+});
+
+canvas.addEvent
