@@ -1,0 +1,6 @@
+This favicon was generated using the following font:
+
+- Font Title: Noto Serif Hebrew
+- Font Author: Copyright 2022 The Noto Project Authors (https://github.com/notofonts/hebrew)
+- Font Source: http://fonts.gstatic.com/s/notoserifhebrew/v20/k3k0o9MMPvpLmixYH7euCwmkS9DohjX1-kRyiqyBqIxnoLbp93i9IKrXKF_qVKUVAG8_vlQxz24.ttf
+- Font License: SIL Open Font License, 1.1 (http://scripts.sil.org/OFL))
